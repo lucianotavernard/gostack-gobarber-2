@@ -1,5 +1,3 @@
-import User from '../models/User'
-import File from '../models/File'
 import Appointment from '../models/Appointment'
 
 import CreateAppointmentService from '../services/CreateAppointmentService'
@@ -25,13 +23,11 @@ class AppointmentController {
       attributes: ['id', 'date', 'past', 'cancelable'],
       include: [
         {
-          model: User,
-          as: 'provider',
+          association: 'provider',
           attributes: ['id', 'name'],
           include: [
             {
-              model: File,
-              as: 'avatar',
+              association: 'avatar',
               attributes: ['id', 'path', 'url'],
             },
           ],

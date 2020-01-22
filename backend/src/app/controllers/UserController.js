@@ -1,5 +1,4 @@
 import User from '../models/User'
-import File from '../models/File'
 
 import Cache from '../../lib/Cache'
 
@@ -40,8 +39,7 @@ class UserController {
     const { id, name, avatar } = await User.findByPk(req.userId, {
       include: [
         {
-          model: File,
-          as: 'avatar',
+          association: 'avatar',
           attributes: ['id', 'path', 'url'],
         },
       ],
