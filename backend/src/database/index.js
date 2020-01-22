@@ -25,10 +25,7 @@ class Database {
   }
 
   mongo() {
-    this.mongoConection = mongoose.connect(mongoConfig.url, {
-      useNewUrlParser: true,
-      useFindAndModify: true,
-    })
+    this.mongoConection = mongoose.connect(mongoConfig.url, mongoConfig.options)
   }
 }
 
