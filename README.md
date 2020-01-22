@@ -10,7 +10,7 @@ Essa aplicação foi desenvolvida para completar o projeto 7.0.
 
 - NodeJS, Yarn, JavaScript, Nodemon, Sucrase, EditorConfig, ESLint, Prettier etc. — core da platforma e ferramentas de desenvolvimento.
 - Express, helmet, cors, etc. — HTTP-server configurações padrão.
-- ReactJS, React Native, etc. — Criação das interfaces Web e Mobile.
+- ReactJS, React Native, Expo, etc. — Criação das interfaces Web e Mobile.
 - PostgresSQL, Redis, MongoDB, Mongoose, Sequelize, pg — SQL, Chave/Valor, NoSQL, ORM e Models.
 
 ## 🔥 Como iniciar a aplicação
@@ -37,7 +37,7 @@ Essa aplicação foi desenvolvida para completar o projeto 7.0.
 
 1. Entre na pasta mobile: `cd mobile`
 2. Instale as dependências do projeto: `yarn install`.
-3. Inicie a aplicação mobile: `react-native run-android` (ou `run-ios` se preferir)
+3. Inicie a aplicação mobile: `yarn start`.
 
 ## 🤔 Como contribuir
 
