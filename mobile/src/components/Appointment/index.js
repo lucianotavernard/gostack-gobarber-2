@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
@@ -10,9 +10,29 @@ import { Container, Left, Avatar, Info, Name, Time, Canceled } from './styles';
 
 export default function Appointment({ data, onCancel }) {
   const dateFormated = useMemo(
-    () => formatRelative(parseISO(data.date), new Date(), { locale: ptBR }),
+    () =>
+      formatRelative(parseISO(data.date), new Date(), {
+        locale: ptBR,
+        addSuffix: true,
+      }),
     [data.date]
   );
+
+  function handleCancelAppointment() {
+    Alert.alert(
+      'Tem certeza que deseja fazer isso?',
+      'Cancelar seu agendamento liberará uma vaga para esse horário e você pode acabar perdendo sua vaga.',
+      [
+        {
+          text: 'Cancelar',
+        },
+        {
+          text: 'Confirmar',
+          onPress: onCancel,
+        },
+      ]
+    );
+  }
 
   return (
     <Container past={data.past}>
@@ -32,8 +52,8 @@ export default function Appointment({ data, onCancel }) {
         </Info>
       </Left>
 
-      {data.cancellable && !data.canceled_at && (
-        <TouchableOpacity onPress={onCancel}>
+      {data.cancelable && !data.canceled_at && (
+        <TouchableOpacity onPress={handleCancelAppointment}>
           <MaterialIcons name="event-busy" size={20} color="#f64c75" />
         </TouchableOpacity>
       )}
@@ -45,7 +65,7 @@ Appointment.propTypes = {
   data: PropTypes.shape({
     past: PropTypes.bool,
     date: PropTypes.string,
-    cancellable: PropTypes.bool,
+    cancelable: PropTypes.bool,
     canceled_at: PropTypes.string,
     provider: PropTypes.shape({
       name: PropTypes.string,

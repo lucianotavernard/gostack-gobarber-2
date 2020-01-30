@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { MaterialIcons } from '@expo/vector-icons';
 
@@ -122,9 +123,15 @@ export default function Profile() {
   );
 }
 
+function TabBarIcon({ tintColor }) {
+  return <MaterialIcons name="person" size={20} color={tintColor} />;
+}
+
+TabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
+};
+
 Profile.navigationOptions = {
   tabBarLabel: 'Meu perfil',
-  tabBarIcon: ({ tintColor }) => (
-    <MaterialIcons name="person" size={20} color={tintColor} />
-  ),
+  tabBarIcon: <TabBarIcon />,
 };

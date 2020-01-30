@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
@@ -22,12 +22,21 @@ export default function Confirm({ navigation }) {
   );
 
   async function handleAddAppointment() {
-    await api.post('appointments', {
-      provider_id: provider.id,
-      date: time,
-    });
+    try {
+      await api.post('appointments', {
+        provider_id: provider.id,
+        date: time,
+      });
 
-    navigation.navigate('Dashboard');
+      navigation.navigate('Dashboard');
+    } catch (err) {
+      const message =
+        err.response && err.response.data
+          ? err.response.data.error
+          : 'Falha no agendamento com o barbeiro.';
+
+      Alert.alert('Ooopsss', message);
+    }
   }
 
   return (

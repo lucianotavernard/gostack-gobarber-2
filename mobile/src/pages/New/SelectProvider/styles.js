@@ -8,10 +8,12 @@ export const Container = styled.SafeAreaView`
 
 export const ProviderList = styled.FlatList.attrs({
   numColumns: 2,
+  contentContainerStyle: {
+    padding: 10,
+  },
   showsVerticalScrollIndicator: false,
 })`
   margin-top: 60px;
-  padding: 0 20px;
 `;
 
 export const Provider = styled(RectButton)`

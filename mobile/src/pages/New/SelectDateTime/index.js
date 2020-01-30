@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import PropTypes from 'prop-types';
 
@@ -13,18 +13,30 @@ import { Container, HourList, Hour, Title } from './styles';
 export default function SelectDateTime({ navigation }) {
   const [date, setDate] = useState(new Date());
   const [hours, setHours] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const provider = navigation.getParam('provider');
 
   useEffect(() => {
     async function loadAvailableHours() {
-      const response = await api.get(`providers/${provider.id}/available`, {
-        params: {
-          date: date.getTime(),
-        },
-      });
+      try {
+        const response = await api.get(`providers/${provider.id}/available`, {
+          params: {
+            date: date.getTime(),
+          },
+        });
 
-      setHours(response.data);
+        setHours(response.data);
+      } catch (err) {
+        const message =
+          err.response && err.response.data
+            ? err.response.data.error
+            : 'Falha no carregamento das horas disponíveis.';
+
+        Alert.alert('Ooopsss', message);
+      } finally {
+        setLoading(false);
+      }
     }
 
     loadAvailableHours();
@@ -37,24 +49,32 @@ export default function SelectDateTime({ navigation }) {
     });
   }
 
+  function renderHour({ item: hour }) {
+    return (
+      <Hour
+        onPress={() => handleSelectHour(hour.value)}
+        enabled={hour.available}
+      >
+        <Title>{hour.time}</Title>
+      </Hour>
+    );
+  }
+
   return (
     <Background>
       <Container>
         <DateInput value={date} onChange={setDate} />
 
-        <HourList
-          data={hours}
-          extraData={date}
-          keyExtractor={item => item.time}
-          renderItem={({ item }) => (
-            <Hour
-              onPress={() => handleSelectHour(item.value)}
-              enabled={item.available}
-            >
-              <Title>{item.time}</Title>
-            </Hour>
-          )}
-        />
+        {loading ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <HourList
+            data={hours}
+            extraData={date}
+            keyExtractor={item => item.time}
+            renderItem={renderHour}
+          />
+        )}
       </Container>
     </Background>
   );
