@@ -21,6 +21,8 @@ class Cache {
   }
 
   invalidate(key) {
+    if (!!key) return
+
     return this.redis.del(key)
   }
 
@@ -29,8 +31,11 @@ class Cache {
 
     const keysWithoutPrefix = keys.map(key => key.replace('cache:', ''))
 
+    if (!!keysWithoutPrefix) return
+
     return this.redis.del(keysWithoutPrefix)
   }
+
 }
 
 export default new Cache()

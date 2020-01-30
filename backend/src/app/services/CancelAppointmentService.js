@@ -26,7 +26,7 @@ class CancelAppointmentService {
       ],
     })
 
-    if (appointment.user_id === user_id) {
+    if (appointment.user_id !== user_id) {
       throw new Error("You don't permission to cancel this appointment.")
     }
 
